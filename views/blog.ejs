@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Blog</title>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+
+    <div class="container mt-5">
+      <h1 class="mb-4"><%= blog.title %></h1>
+      <img src="/<%= blog.coverImageURL %>" class="img-fluid mb-4" style="max-width: 100%; height: auto; border-radius: 8px;" />
+      <pre class="mt-3 p-3 bg-light border rounded" style="white-space: pre-wrap;"><%= blog.body %></pre>
+    </div>
+
+    <div class="container mt-5 d-flex align-items-center">
+      <img src="<%= blog.createdBy.profileImageURL %>" width="50px" class="me-3 rounded-circle" />
+      <span class="fs-5"><%= blog.createdBy.fullName %></span>
+    </div>
+
+    <div class="container mt-5">
+      <h2 class="mb-4">Comments (<%= comments.length %>)</h2>
+      <% if (locals.user) { %>
+      <form action="/blog/comment/<%= blog._id %>" method="post" class="mb-4">
+        <div class="mb-3">
+          <input
+            type="text"
+            name="content"
+            class="form-control mb-2"
+            placeholder="Enter your comment"
+          />
+          <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+      </form>
+      <% } %>
+
+      <div class="comments-list mt-3">
+        <% comments.forEach(comment => { %>
+        <div class="p-3 mb-3 bg-light border rounded">
+          <div class="d-flex align-items-center mb-2">
+            <img src="<%= comment.createdBy.profileImageURL %>" width="40px" class="me-2 rounded-circle" />
+            <strong><%= comment.createdBy.fullName %></strong>
+          </div>
+          <pre class="mb-0" style="white-space: pre-wrap;"><%= comment.content %></pre>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <%- include('./partials/scripts') %>
+  </body>
+</html>
